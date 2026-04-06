@@ -1,0 +1,32 @@
+clude <stdio.h>
+
+// Function to merge two subarrays
+void merge(int arr[], int left, int mid, int right) {
+//write your code here
+	int i=left,h=left;
+	int j=mid+1;
+	int k,temp[100];
+	while(h<=mid && j<=right){
+		if(arr[h]<=arr[j]){
+			temp[i]=arr[h];
+			h++;
+		}else{
+			temp[i]=arr[j];
+			j++;
+		}
+		i++;
+	}
+	if(h<=mid){
+		for(k=h;k<=mid;k++){
+			temp[i]=arr[k];
+			i++;
+		}
+	}else{
+		for(k=j;k<=right;k++){
+			temp[i]=arr[k];
+			i++;
+		}
+	}
+	for(k=left;k<=right;k++){
+		arr[k]=temp[k];
+	}
