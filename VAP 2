@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+
+bool isBalanced(const char* s) {
+    int n = strlen(s);
+    
+    // Dynamically allocate the stack based on the string length
+    char* stack = (char*)malloc(n * sizeof(char));
+    int top = -1;
+    
+    for (int i = 0; i < n; i++) {
+        char ch = s[i];
+        
+        // Push opening brackets onto the stack
+        if (ch == '(' || ch == '{' || ch == '[') {
+            stack[++top] = ch;
+        } 
+        // Handle closing brackets
+        else if (ch == ')' || ch == '}' || ch == ']') {
+            // If the stack is empty, there is no matching opening bracket
+            if (top == -1) {
+                free(stack);
+                return false; 
+            }
+            
+            char top_ch = stack[top--];
+            
+            // Check if the top of the stack matches the current closing bracket
+            if ((ch == ')' && top_ch != '(') ||
+                (ch == '}' && top_ch != '{') ||
+                (ch == ']' && top_ch != '[')) {
+                free(stack);
+                return false; 
+            }
+        }
+    }
+    
+    // If the stack is completely empty at the end, it is balanced
+    bool result = (top == -1);
+    
+    free(stack); // Always clean up allocated memory
+    return result;
+}
+
+int main() {
+    // Testing the examples
+    const char* s1 = "[{()}]";
+    const char* s2 = "[()()][]";
+    const char* s3 = "([)";
+    const char* s4 = "([{]})";
+    
+    printf("Input: \"%s\" -> Output: %s\n", s1, isBalanced(s1) ? "true" : "false");
+    printf("Input: \"%s\" -> Output: %s\n", s2, isBalanced(s2) ? "true" : "false");
+    printf("Input: \"%s\" -> Output: %s\n", s3, isBalanced(s3) ? "true" : "false");
+    printf("Input: \"%s\" -> Output: %s\n", s4, isBalanced(s4) ? "true" : "false");
+    
+    return 0;
+}
